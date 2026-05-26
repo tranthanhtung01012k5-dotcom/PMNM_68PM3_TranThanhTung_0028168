@@ -1,36 +1,38 @@
 <?php
 
 class ConnectDB {
-    private static $host = 'localhost';
-    private static $db_name = '68PM34';
+
+    private static $host = '127.0.0.1';
+    private static $db_name = 'PMNM_68PM3';
     private static $username = 'root';
-    private static $password = '5555';
+    private static $password = '';
+
     public static $conn;
 
     public static function connect() {
 
-        $conn = null;
+        if(self::$conn == null){
 
-        try {
+            try {
 
-            $conn = new PDO(
-                'mysql:host=' . self::$host . ';dbname=' . self::$db_name,
-                self::$username,
-                self::$password
-            );
+                self::$conn = new PDO(
+                    "mysql:host=127.0.0.1;port=3307;dbname=PMNM_68PM3;charset=utf8mb4",
+                    "root",
+                    ""
+                );
 
-            $conn->setAttribute(
-                PDO::ATTR_ERRMODE,
-                PDO::ERRMODE_EXCEPTION
-            );
+                self::$conn->setAttribute(
+                    PDO::ATTR_ERRMODE,
+                    PDO::ERRMODE_EXCEPTION
+                );
 
-        } catch(PDOException $e) {
+            } catch(PDOException $e) {
 
-            echo 'Lỗi kết nối: ' . $e->getMessage();
-
+                die("Lỗi kết nối: " . $e->getMessage());
+            }
         }
 
-        return $conn;
+        return self::$conn;
     }
 }
 
