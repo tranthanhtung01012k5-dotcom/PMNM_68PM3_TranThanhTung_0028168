@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sinh viên</title>
+    <title><?php echo $title ?? "Danh sách sinh viên"; ?></title>
     
     <style>
         * {
@@ -97,12 +97,14 @@
         <th> Địa chỉ </th> -->
         <!-- <th> Lớp </th> -->
     </tr>
-    <?php foreach ($sinhviens as $index => $sinhvien): ?>
+    <?php 
+    /** @var array $sinhviens */
+    foreach ($sinhviens as $index => $sinhvien): ?>
         <tr>
             <td> <?php echo $index + 1; ?> </td>
-            <td> <?php echo $sinhvien['ma_sv']; ?> </td>
-            <td> <?php echo $sinhvien['ho_ten']; ?> </td>
-            <td> <?php echo $sinhvien['gioi_tinh']; ?> </td>
+            <td> <?php echo $sinhvien['mssv']; ?> </td>
+            <td> <?php echo $sinhvien['hoten']; ?> </td>
+            <td> <?php echo $sinhvien['gioitinh']; ?> </td>
             <!-- <td> <?php echo $sinhvien['ngay_sinh']; ?> </td> -->
             <!-- <td> <?php echo $sinhvien['dia_chi']; ?> </td> -->
             <!-- <td> <?php echo $sinhvien['lop']; ?> </td> -->
