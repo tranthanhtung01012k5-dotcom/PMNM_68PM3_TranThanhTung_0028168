@@ -1,9 +1,11 @@
 <?php
-class home
+require_once '../app/core/Controller.php';
+
+class home extends Controller
 {
   public function index()
   {
-    echo "Đây là trang chủ";
+    $this->view('lauyout/masterlayout',[]);
   }
 
   public function about()

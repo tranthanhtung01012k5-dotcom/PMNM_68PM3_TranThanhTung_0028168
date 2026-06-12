@@ -11,29 +11,27 @@ class ConnectDB {
 
     public static function connect() {
 
-        if(self::$conn == null){
+    if (self::$conn == null) {
 
-            try {
+        try {
+            $host = self::$host;
+            $db = self::$db_name;
 
-                self::$conn = new PDO(
-                    "mysql:host=127.0.0.1;port=3307;dbname=PMNM_68PM3;charset=utf8mb4",
-                    "root",
-                    ""
-                );
+            self::$conn = new PDO(
+                "mysql:host=$host;port=3306;dbname=$db;charset=utf8mb4",
+                self::$username,
+                self::$password
+            );
 
-                self::$conn->setAttribute(
-                    PDO::ATTR_ERRMODE,
-                    PDO::ERRMODE_EXCEPTION
-                );
+            self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            } catch(PDOException $e) {
-
-                die("Lỗi kết nối: " . $e->getMessage());
-            }
+        } catch (PDOException $e) {
+            die("Lỗi kết nối: " . $e->getMessage());
         }
-
-        return self::$conn;
     }
+
+    return self::$conn;
+}
 }
 
 ?>
