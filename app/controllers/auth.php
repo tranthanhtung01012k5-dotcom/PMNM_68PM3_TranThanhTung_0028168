@@ -1,29 +1,50 @@
 <?php
-class auth
-{
-    protected $users = [
-        'admin' => ['password' => 'admin123'],
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+class auth {
+    protected $user = [
+            "lxh"=>"lxh1",
+            "admin"=>"123"
     ];
 
-    public function login()
+    public function login() {
+        $error = '';
+
+        if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+            $username = $_POST['username'] ?? '';
+            $password = $_POST['password'] ?? '';
+            
+            if(isset($this->user[$username]) && $this->user[$username] == $password) {
+                $_SESSION['username'] = $username;
+                $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
+                header("Location: " . $basePath . "/sinhvien/index");
+                exit();
+            } else {
+                $error = 'Tai khoan hoac mat khau khong dung.';
+            }
+        }
+
+        Controller::renderView('sinhvien/login', [
+            'title' => 'Dang nhap',
+            'error' => $error,
+        ]);
+    }
+
+    public function logout()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        session_destroy();
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+        if (isset($_COOKIE['username'])) {
+            setcookie('username', '', time() - 3600, '/');
+        }
 
-    if (isset($this->users[$username]) &&
-        $this->users[$username]['password'] === $password) {
+        if (isset($_COOKIE['password'])) {
+            setcookie('password', '', time() - 3600, '/');
+        }
 
-        $_SESSION['username'] = $username;
-
-        header('Location: /index.php?url=sinhvien/index');
+        $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
+        header('Location: ' . $basePath . '/auth/login');
         exit();
     }
-
-    echo "Sai tài khoản hoặc mật khẩu";
-    return;
 }
-    }
-}
-?>

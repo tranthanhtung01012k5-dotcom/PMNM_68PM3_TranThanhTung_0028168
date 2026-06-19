@@ -1,24 +1,21 @@
 <?php
-require_once '../app/core/App.php';
 class middleware
 {
-  function checklogin()
+    public function checklogin()
     {
-        $publicPages = ['/home/login', '/auth/login'];
-
-        if (!isset($_SESSION['username']) && !in_array($_SERVER['REQUEST_URI'], $publicPages)) {
-            header('Location: /home/login');
-            exit();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
-    }
 
-    public function checklogout()
-    {
-        if (isset($_SESSION['username'])) {
+        $url = trim($_GET['url'] ?? '', '/');
+        $publicPages = [
+            'auth/login',
+        ];
 
-            header('Location: /home/index');
+        if (!isset($_SESSION['username']) && !in_array($url, $publicPages)) {
+            $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
+            header('Location: ' . $basePath . '/auth/login');
             exit();
         }
     }
 }
-?>
